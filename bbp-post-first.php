@@ -6,7 +6,7 @@ Plugin URI: http://casier.eu/wp-dev/bbp-post-first
 Author: Pascal Casier
 Author URI: http://casier.eu/wp-dev/
 Text Domain: bbp-post-first
-Version: 1.0.3
+Version: 1.0.4
 License: GPL2
 */
 
@@ -101,6 +101,8 @@ function bbppostfirst_get_template_part_slug( $slug, $name ) {
 add_action( "get_template_part_content", 'bbppostfirst_get_template_part_slug', 10, 2 ); 
 
 function bbppostfirst_forum_has_post() {
+	$key = 'post_first_forum_ids';
+	$user_id = get_current_user_id();
 	$a = get_user_meta($user_id, $key, true);
 	$forum_id = bbp_get_forum_id();
 	if ($a) {
@@ -113,7 +115,7 @@ function bbppostfirst_forum_has_post() {
 		$a = array();
 	}
 	$a[] = $forum_id;
-	update_user_meta( get_current_user_id(), 'post_first_forum_ids', $a );
+	update_user_meta( $user_id, $key, $a );
 }
 add_action( 'bbp_new_topic_post_extras', 'bbppostfirst_forum_has_post' );
 
@@ -185,13 +187,16 @@ function bbppostfirst_attributes_metabox() {
 }
 add_action('add_meta_boxes', 'bbppostfirst_attributes_metabox');
 
+
 /**
 * Add Subscriptions menu item under forums
 */
+/*
 add_action('admin_menu', 'bbptoolkit_subscr_submenu');
 function bbptoolkit_subscr_submenu(){
 	$confHook = add_submenu_page('edit.php?post_type=forum', 'Post First', 'Post First', 'edit_forums', 'forum_postfirst', 'forum_postfirst_page');
 }
+*/
 /**
 * MAIN PAGE
 */
